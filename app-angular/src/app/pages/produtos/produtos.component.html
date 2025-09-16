@@ -1,0 +1,101 @@
+<div class="container">
+  <h1>Cadastro de Produtos</h1>
+
+  <!-- Mensagens de erro -->
+  <div *ngIf="erro" class="alert alert-error">
+    {{ erro }}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading">
+    Carregando produtos...
+  </div>
+
+  <!-- Formulário de criação -->
+  <div class="form-section">
+    <h2>Novo Produto</h2>
+    <form (ngSubmit)="criarProduto()" class="product-form">
+      <div class="form-group">
+        <label for="descricao">Descrição:</label>
+        <input 
+          type="text" 
+          id="descricao" 
+          [(ngModel)]="novoProduto.descricao" 
+          name="descricao" 
+          required 
+          placeholder="Digite a descrição do produto">
+      </div>
+
+      <div class="form-group">
+        <label for="preco">Preço:</label>
+        <input 
+          type="number" 
+          id="preco" 
+          [(ngModel)]="novoProduto.preco" 
+          name="preco" 
+          step="0.01" 
+          min="0" 
+          required 
+          placeholder="0.00">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Adicionar Produto</button>
+    </form>
+  </div>
+
+  <!-- Lista de produtos -->
+  <div class="products-section">
+    <h2>Produtos Cadastrados</h2>
+    
+    <div *ngIf="produtos.length === 0 && !carregando" class="empty-state">
+      Nenhum produto cadastrado.
+    </div>
+
+    <table *ngIf="produtos.length > 0" class="products-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descrição</th>
+          <th>Preço</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Modo edição -->
+        <tr *ngIf="modoEdicao && produtoEditando" class="editing-row">
+          <td>{{ produtoEditando.id }}</td>
+          <td>
+            <input 
+              type="text" 
+              [(ngModel)]="produtoEditando.descricao" 
+              name="editDescricao">
+          </td>
+          <td>
+            <input 
+              type="number" 
+              [(ngModel)]="produtoEditando.preco" 
+              name="editPreco" 
+              step="0.01" 
+              min="0">
+          </td>
+          <td class="actions">
+            <button (click)="salvarEdicao()" class="btn btn-success">Salvar</button>
+            <button (click)="cancelarEdicao()" class="btn btn-secondary">Cancelar</button>
+          </td>
+        </tr>
+
+        <!-- Lista normal -->
+        <tr *ngFor="let produto of produtos" 
+            [class.hidden]="modoEdicao && produtoEditando?.id === produto.id">
+          <td>{{ produto.id }}</td>
+          <td>{{ produto.descricao }}</td>
+          <td>R$ {{ produto.preco | number:'1.2-2' }}</td>
+          <td class="actions">
+            <button (click)="iniciarEdicao(produto)" class="btn btn-warning">Editar</button>
+            <button (click)="excluirProduto(produto.id)" class="btn btn-danger">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
