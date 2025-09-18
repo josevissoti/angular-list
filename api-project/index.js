@@ -242,7 +242,7 @@ app.get('/hello', (_req, res) => res.json({ msg: 'hello world' }));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 API rodando em http://localhost:${PORT}`);
-  console.log(`📚 Swagger UI: http://localhost:${PORT}/api-docs`);
-  console.log(`📄 OpenAPI JSON: http://localhost:${PORT}/api-docs.json`);
+  console.log(`API rodando em http://localhost:${PORT}`);
+  console.log(`Swagger UI: http://localhost:${PORT}/api-docs`);
+  console.log(`OpenAPI JSON: http://localhost:${PORT}/api-docs.json`);
 });
